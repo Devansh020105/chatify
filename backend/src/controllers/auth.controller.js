@@ -34,8 +34,11 @@ export const signup = async (req,res)=>{
         });
 
         if(newUser){
-            await newUser.save();
-            generateToken(newUser._id, res);
+            // await newUser.save();
+            // generateToken(newUser._id, res);
+
+            const savedUser = await newUser.save();
+            generateToken(savedUser._id,res);
 
             res.status(201).json({  // 200 means success and 201 means something created succesfully 
                 _id: newUser._id,

@@ -1,6 +1,10 @@
 import jwt from "jsonwebtoken";
 
 export const generateToken = (userId,res)=>{
+    const{JWT_SECRET,NODE_ENV} = process.env;
+    if(!JWT_SECRET){
+        throw new Error("JWT_SCCRET is not configured");
+    }
     //create a token for a user
     const token = jwt.sign({userid},process.env.JWT_SECRET,{
         dexpiresIn: "7d",
