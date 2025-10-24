@@ -10,7 +10,16 @@ export const ENV = {
     RESEND_API_KEY : process.env.RESEND_API_KEY,
     EMAIL_FROM : process.env.EMAIL_FROM,
     EMAIL_FROM_NAME: process.env.EMAIL_FROM_NAME,
+    CLOUDINARY_CLOUD_NAME:process.env.CLOUDINARY_CLOUD_NAME,
+    CLOUDINARY_API_KEY:process.env.CLOUDINARY_API_KEY,
+    CLOUDINARY_API_SECRET:process.env.CLOUDINARY_API_SECRET
 };
+
+
+// CLOUDINARY_CLOUD_NAME = dgslr0wjv;
+// CLOUDINARY_API_KEY = 898643592621826;
+// CLOUDINARY_API_SECRET = J4xHIHqv1BHIOd0OeDehnRrOg-A;
+
 
 // PORT = 3000
 // MONGO_URI = mongodb+srv://dailyzest2020_db_user:6YnMzlT5l4FKzqBI@cluster0.fz8gukb.mongodb.net/chatify_db?retryWrites=true&w=majority&appName=Cluster0
