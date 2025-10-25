@@ -9,10 +9,6 @@ import messageRoutes from "./routes/message.rout.js"
 import { connectDB } from "./lib/db.js";
 import { ENV } from "./lib/env.js";
 const app = express();
-app.get('/', (req, res) => {
-    // This confirms the server is reachable and responsive
-    res.send('Server is up and running!'); 
-});
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
