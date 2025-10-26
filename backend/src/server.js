@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import path from "path";
 import { fileURLToPath } from 'url';  // <-- NEW IMPORT
 import { dirname } from 'path';      // <-- NEW IMPORT
+import cors from "cors";
 
 import authRoutes from "./routes/auth.rout.js"
 import messageRoutes from "./routes/message.rout.js"
@@ -20,6 +21,7 @@ const PORT = ENV.PORT || 3000;
 
 //payload too large error
 app.use(express.json({})) //req.body
+app.use(cors({origin:ENV.CLIENT_URL, credentials:true}))
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
