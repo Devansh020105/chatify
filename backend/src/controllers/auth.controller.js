@@ -62,7 +62,7 @@ export const signup = async (req,res)=>{
             res.status(400).json({message: "Invalid user data"});
         }
     } catch (error){
-        console.log("Enter in signup controller:", error);
+        console.log("Error in signup controller:", error);
         res.status(500).json({message: "Internal server error"});
     }
 };
@@ -72,7 +72,7 @@ export const login = async (req,res) => {
     const {email,password} = req.body
 
     if(!email || !password){
-        return res.status(400).json({ message: "Email and password required"});
+        return res.status(400).json({ message: "Email and password are required"});
     }
 
     try {
@@ -90,7 +90,8 @@ export const login = async (req,res) => {
             email: user.email,
             profilePic: user.profilePic,
         });
-    } catch (error) {
+    } 
+    catch (error) {
         console.error("Error in login controller:",error)
         res.status(500).json({message:"Internal server error"})
     }
