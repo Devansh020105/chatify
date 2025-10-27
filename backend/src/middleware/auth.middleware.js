@@ -13,6 +13,7 @@ export const protectRoute = async(req,res,next) =>{
         if(!user) return res.status(404).json({message: "User not found"})
         
         req.user = user
+        //console.log("PROTECT ROUTE SUCCESS: Calling next() for user:", user._id);
         next()
     } catch (error) {
         console.log("Error in protectRout middleware:", error);
