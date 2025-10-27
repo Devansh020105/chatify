@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+console.log("SERVER AUTH KEY CHECK:", process.env.CLOUDINARY_API_KEY);
 import express from "express";
 import cookieParser from "cookie-parser";
 import path from "path";
@@ -20,7 +23,8 @@ const frontend_dist_path = path.join(__dirname, '..', '..', 'frontend', 'dist');
 const PORT = ENV.PORT || 3000;
 
 //payload too large error
-app.use(express.json({})) //req.body
+app.use(express.json({ limit: '10mb' })) ;//req.body
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cors({origin:ENV.CLIENT_URL, credentials:true}))
 app.use(cookieParser());
 
