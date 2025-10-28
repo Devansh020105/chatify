@@ -9,7 +9,7 @@ import ChatContainer from "../components/ChatContainer";
 import NoConverstaionPlaceholder from "../components/NoConverstaionPlaceholder";
 
 function ChatPage() {
-  const { activeTab, selecetedUSer } = useChatStore();
+  const { activeTab, selectedUSer } = useChatStore();
   return (
     <div className='relative w-full max-w-6xl h-[800px]'>
       <BorderAnimatedContainer>
@@ -24,8 +24,7 @@ function ChatPage() {
 
         {/* RIGHT SIDE */}
         <div className='flex-1 flex flex-col bg-slate-900/50 backdrop-blur-sm'>
-        {selecetedUSer ? <ChatContainer/> : <NoConverstaionPlaceholder/>}
-
+          {selectedUSer ? <ChatContainer/> : <NoConverstaionPlaceholder/>}
         </div>
 
       </BorderAnimatedContainer>
