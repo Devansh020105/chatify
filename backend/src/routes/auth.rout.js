@@ -9,7 +9,8 @@ const router = express.Router();
 //     res.status(200).json({ message: "Text route" })
 // })
 
-router.use(arcjetProtection);
+
+//router.use(arcjetProtection);
 
 router.post("/signup",signup);
 

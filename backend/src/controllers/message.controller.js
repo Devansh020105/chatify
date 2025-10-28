@@ -18,20 +18,29 @@ export const getAllContacts = async(req, res) =>{
 
 export const getMesssagesByUserId = async(req,res)=>{
     try {
-        const myId = req.user._id;
+        const myId = req.user?._id;
         const {id:userToChatId} = req.params
+
+        if (!myId) {
+            // This is a 401 error handled by protectRoute, but good to have a final check
+            return res.status(401).json({ message: "Authentication required (Missing sender ID)." });
+        }
+        if (!userToChatId) {
+            // This fixes the case where the frontend doesn't supply the ID
+            return res.status(400).json({ message: "Recipient ID is missing from the request." });
+        }
 
         const messages = await Message.find({
             $or:[
                 {senderId:myId, receiverId: userToChatId},
-                {senderId:userToChatId, reciverId: myId},
-            ]
-        })
+                {senderId:userToChatId, receiverId: myId},
+            ],
+        });
 
         res.status(200).json(messages)
     } catch (error) {
         console.log("Error in getMessages controller: ", error.message);
-
+        res.status(500).json({ error: "Internal server error" });
     }
 }
 
