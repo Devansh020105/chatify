@@ -2,7 +2,8 @@ import {create} from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import { useAuthStore } from "./useAuthStore";
-//import { useAuthStore } from "./useAuthStore";
+
+
 
 export const useChatStore = create((set,get)=>({
     allContacts: [],
@@ -91,10 +92,40 @@ export const useChatStore = create((set,get)=>({
             //toast.error.response.data.messages || "Something went wrong"
             set((state) => ({
              messages: state.messages.filter(msg => msg._id !== tempId),
-            }));
+             }));
             const errorMessage = error.response?.data?.message || "Failed to send message. Check network and server logs.";
             toast.error(errorMessage);
             console.error("Axios Send Error:", error);
         }
-    }
+
+    },
+
+    subscribeToMessages: () => {
+        const { selectedUSer, isSoundEnabled} = get();
+        if (!selectedUSer) return
+
+
+        const socket = useAuthStore.getState().socket;
+
+        socket.on("newMessage", (newMessage) => {
+            const isMessageSentFromSelecteduser = newMessage.senderId === selectedUSer._id;
+            if(!isMessageSentFromSelecteduser) return;
+
+            const currentMessages = get().messages
+            set({messages: [...currentMessages,newMessage]})
+
+            if(isSoundEnabled){
+                const notificationSound = new Audio("/sounds/notification.mp3")
+                notificationSound.currentTime =0; //reset to start 
+                notificationSound.play().catch((e) => console.log("Audio play failed:", e));
+            }
+        })
+    },
+
+    unsubscribeFromMessages: () => {
+    const socket = useAuthStore.getState().socket;
+    socket.off("newMessage");
+    },
+
+
 })) ;
