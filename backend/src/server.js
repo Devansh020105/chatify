@@ -23,7 +23,7 @@ const frontend_dist_path = path.join(__dirname, '..', '..', 'frontend', 'dist');
 const PORT = ENV.PORT || 3000;
 
 //payload too large error
-app.use(express.json({ limit: '10mb' })) ;//req.body
+app.use(express.json({ limit: '5mb' })) ;//req.body
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cors({origin:ENV.CLIENT_URL, credentials:true}))
 app.use(cookieParser());

@@ -1,6 +1,7 @@
 import {create} from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
+import { useAuthStore } from "./useAuthStore";
 //import { useAuthStore } from "./useAuthStore";
 
 export const useChatStore = create((set,get)=>({
@@ -56,4 +57,44 @@ export const useChatStore = create((set,get)=>({
       set({ isMessagesLoading: false });
     }
     },
+
+    sendMessage: async (messageData) => {
+        const {selectedUSer,messages} = get();
+        const {authUser} = useAuthStore.getState()
+        
+        const tempId = `temp-${Date.now()}`
+        
+        const optimisticMessage = {
+            _id : tempId,
+            senderId: authUser._id,
+            receiverId :selectedUSer._id,
+            text: messageData.text,
+            image: messageData.image,
+            createdAt: new Date().toISOString(),
+            isOptimistic: true,
+        };
+        //immideatly update UI
+        set({messages: [...messages,optimisticMessage]})
+        try {
+            const res = await axiosInstance.post(`/messages/send/${selectedUSer._id}`,messageData)
+            //set({messages:messages.concate(res.data)})
+            if (res.data) {
+             set((state) => ({
+                messages: state.messages.map(msg =>
+                msg._id === tempId
+                ? { ...res.data, isOptimistic: false } 
+                        : msg),
+                 //messages: state.messages.concat(res.data), 
+             }));
+        }
+        } catch (error) {
+            //toast.error.response.data.messages || "Something went wrong"
+            set((state) => ({
+             messages: state.messages.filter(msg => msg._id !== tempId),
+            }));
+            const errorMessage = error.response?.data?.message || "Failed to send message. Check network and server logs.";
+            toast.error(errorMessage);
+            console.error("Axios Send Error:", error);
+        }
+    }
 })) ;
