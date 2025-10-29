@@ -12,7 +12,7 @@ import authRoutes from "./routes/auth.rout.js"
 import messageRoutes from "./routes/message.rout.js"
 import { connectDB } from "./lib/db.js";
 import { ENV } from "./lib/env.js";
-const app = express();
+import { app, server } from './lib/socket.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -39,7 +39,7 @@ if(ENV.NODE_ENV === "production"){
         res.sendFile(path.join(frontend_dist_path,"index.html"));
     })
 }
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log("Server running on port: "+ PORT)
     connectDB();
 });
