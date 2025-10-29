@@ -4,6 +4,7 @@ import { useChatStore } from "../store/useChatStore";
 import toast from "react-hot-toast";
 import { ImageIcon, SendIcon, XIcon } from "lucide-react";
 
+
 function MessageInput() {
   const { playRandomKeyStrokeSound } = useKeyboardSound();
   const [text, setText] = useState("");
@@ -13,7 +14,7 @@ function MessageInput() {
 
   const { sendMessage, isSoundEnabled } = useChatStore();
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = (e) => { //basically for submit
     e.preventDefault();
     if (!text.trim() && !imagePreview) return;
     if (isSoundEnabled) playRandomKeyStrokeSound();
@@ -22,7 +23,7 @@ function MessageInput() {
       text: text.trim(),
       image: imagePreview,
     });
-    setText("");
+    setText(""); //resetting after sending
     setImagePreview("");
     if (fileInputRef.current) fileInputRef.current.value = "";
   };

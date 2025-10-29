@@ -3,15 +3,28 @@ import {useChatStore} from "../store/useChatStore"
 import {useAuthStore} from "../store/useAuthStore"
 import ChatHeader from './ChatHeader'
 import NoChatHistoryPlaceholder from "./NoChatHistoryPlaceholder" 
-//import MessageInput from "./MessageInput";
+import MessageInput from "./MessageInput";
 import MessagesLoadingSkeleton from "./MessagesLoadingSkeleton";
 function ChatContainer() {
-  const{selectedUSer, getMessagesByUserId, messages, isMessagesLoading} = useChatStore()
+  const{selectedUSer, getMessagesByUserId, messages, isMessagesLoading,} = useChatStore()
   const {authUser} = useAuthStore()
+  const messageEndRef = useRef(null);
 
   useEffect(() => {
+    if (selectedUSer?._id) {
     getMessagesByUserId(selectedUSer._id);
-  },[selectedUSer,getMessagesByUserId])
+    }
+  },[selectedUSer,getMessagesByUserId]);
+
+  if (!selectedUSer || !authUser) {
+        return null; // Don't render anything until essential data is available
+    }
+  
+    useEffect(() => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   return(
     <>
@@ -52,7 +65,7 @@ function ChatContainer() {
         )}
       </div>
 
-      {/* <MessageInput /> */}
+      <MessageInput />
     </>
   );
 }
